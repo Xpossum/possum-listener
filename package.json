@@ -7,8 +7,9 @@
     "serve": "http-server . -p 8080",
     "start": "node src/listener.js"
   },
-  "dependencies": {
-    "http-server": "^14.1.1",
-    "xrpl": "^2.8.0"
-  }
+ "dependencies": {
+  "express": "^4.18.2",
+  "http-server": "^14.1.1",
+  "xrpl": "^2.8.0"
+}
 }
