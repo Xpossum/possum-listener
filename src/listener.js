@@ -6,13 +6,13 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Serve /public folder (relative to src/)
-app.use(express.static(path.join(__dirname, "public")));
+// ✅ Serve everything in /public (one level up from /src)
+app.use(express.static(path.join(__dirname, "..", "public")));
 
-// ✅ Write to /public/mint.json
-const FILE_PATH = path.join(__dirname, "public", "mint.json");
+// ✅ Path to mint.json
+const FILE_PATH = path.join(__dirname, "..", "public", "mint.json");
 
-// 👇 Replace with your actual wallet
+// ✅ XRPL wallet to track
 const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
 
 async function main() {
@@ -26,7 +26,7 @@ async function main() {
   });
 
   client.on("transaction", (tx) => {
-    const { transaction, meta } = tx;
+    const { transaction } = tx;
 
     if (
       transaction.TransactionType === "NFTokenMint" &&
@@ -52,5 +52,3 @@ app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   main();
 });
-
-
