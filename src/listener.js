@@ -7,10 +7,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ✅ Serve everything in /public
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ Path to /public/mint.json
-const FILE_PATH = path.join(__dirname, "..", "public", "mint.json");
+const FILE_PATH = path.join(__dirname, "public", "mint.json");
 
 // ✅ Your XRPL wallet address
 const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
@@ -57,3 +57,4 @@ async function main() {
 main().catch((err) => {
   console.error("❌ Listener failed:", err);
 });
+
