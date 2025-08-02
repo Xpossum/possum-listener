@@ -6,20 +6,27 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Serve everything in /public correctly (no more __dirname + "..")
-app.use(express.static(path.join(process.cwd(), "public")));
+// ✅ Define path to public/mint.json
+const FILE_PATH = path.join(__dirname, "../public/mint.json");
 
-// ✅ Write to actual file inside /public
-const FILE_PATH = path.join(process.cwd(), "public", "mint.json");
+// ✅ Serve mint.json publicly
+app.use(express.static(path.join(__dirname, "../public")));
+app.get("/mint.json", (req, res) => {
+  res.sendFile(FILE_PATH);
+});
 
-// 🔐 Your XRPL wallet
-const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
+// ✅ Start Express server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
-// 🚀 Start listening for XRPL mint transactions
+// ✅ XRPL Listener
+const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT"; // your possum wallet
+
 async function main() {
   const client = new xrpl.Client("wss://xrplcluster.com");
   await client.connect();
-  console.log("✅ Connected to XRPL, listening for mints...");
+  console.log("🔁 Listening for NFT mints from:", WALLET);
 
   await client.request({
     command: "subscribe",
@@ -27,26 +34,24 @@ async function main() {
   });
 
   client.on("transaction", (tx) => {
-    console.log("🔵 TX received:", JSON.stringify(tx, null, 2));
-
     const { transaction, meta } = tx;
+
     if (
       transaction.TransactionType === "NFTokenMint" &&
       transaction.Account === WALLET &&
       meta.TransactionResult === "tesSUCCESS"
     ) {
       const mintTime = new Date().toISOString();
-      console.log("🔥 GEN2 Possum Minted at", mintTime);
+      console.log("🔥 GEN2 Possum minted at", mintTime);
 
-      // ✅ Save to /public/mint.json
-      fs.writeFileSync(FILE_PATH, JSON.stringify({ lastMint: mintTime }));
-      console.log("✅ mint.json updated successfully");
+      try {
+        fs.writeFileSync(FILE_PATH, JSON.stringify({ lastMint: mintTime }, null, 2));
+        console.log("✅ mint.json updated successfully");
+      } catch (e) {
+        console.error("❌ Failed to write mint.json:", e);
+      }
     }
   });
 }
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
-});
 
 main().catch(console.error);
