@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 const FILE_PATH = path.join(__dirname, "../public", "mint.json");
 
 // 👇 Replace with your actual wallet
-const WALLET = "rfX2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
+const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
 
 async function main() {
   const client = new xrpl.Client("wss://xrplcluster.com");
@@ -52,3 +52,4 @@ app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   main();
 });
+
