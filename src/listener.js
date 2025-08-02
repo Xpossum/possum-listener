@@ -6,10 +6,10 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Path to mint.json (one level up from src folder)
+// 🔥 Absolute path to mint.json (root-level)
 const FILE_PATH = path.join(__dirname, "..", "mint.json");
 
-// ✅ Serve mint.json at /mint.json
+// ✅ Serve mint.json
 app.get("/mint.json", (req, res) => {
   console.log("Serving mint.json...");
   res.sendFile(FILE_PATH);
@@ -20,7 +20,7 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// ✅ XRPL Listener Setup
+// 💣 XRPL Listener
 const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
 
 async function main() {
@@ -43,11 +43,11 @@ async function main() {
       meta.TransactionResult === "tesSUCCESS"
     ) {
       const mintTime = new Date().toISOString();
-      console.log("✅ GEN2 Possum Minted at:", mintTime);
+      console.log("GEN2 Possum Minted at", mintTime);
 
-      // ✅ Save timestamp to mint.json
+      // ✅ Write timestamp to mint.json
       fs.writeFileSync(FILE_PATH, JSON.stringify({ lastMint: mintTime }));
-      console.log("✅ mint.json updated at:", FILE_PATH);
+      console.log("Updated mint.json at:", FILE_PATH);
     }
   });
 }
