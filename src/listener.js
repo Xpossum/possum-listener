@@ -1,14 +1,15 @@
-const express = require("express");
-const xrpl = require("xrpl");
-const fs = require("fs");
 const path = require("path");
+const express = require("express");
+const fs = require("fs");
+const xrpl = require("xrpl");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Define path to public/mint.json
-const FILE_PATH = path.join(__dirname, "../public/mint.json");
+// ✅ FIXED — serve /public from the right spot
+app.use(express.static(path.join(__dirname, "../public")));
 
+const FILE_PATH = path.join(__dirname, "../public", "mint.json");
 // ✅ Serve mint.json publicly
 app.use(express.static(path.join(__dirname, "../public")));
 app.get("/mint.json", (req, res) => {
@@ -55,3 +56,4 @@ async function main() {
 }
 
 main().catch(console.error);
+
