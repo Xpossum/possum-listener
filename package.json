@@ -2,10 +2,10 @@
   "name": "possum-detector",
   "version": "1.0.0",
   "description": "XRPL GEN2 Mint Listener",
-  "main": "listener.js",
+  "main": "src/listener.js",
   "scripts": {
     "serve": "http-server . -p 8080",
-    "start": "node listener.js"
+    "start": "node src/listener.js"
   },
   "dependencies": {
     "http-server": "^14.1.1",
