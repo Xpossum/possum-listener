@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ✅ Serve everything in /public
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, "..", "public", "mint.json");
 
 // ✅ Path to the actual file in /public
 const FILE_PATH = path.join(__dirname, "..", "public", "mint.json");
@@ -56,3 +56,4 @@ app.listen(PORT, () => {
 
 // ✅ Start XRPL logic
 main().catch(console.error);
+
