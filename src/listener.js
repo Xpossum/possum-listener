@@ -6,22 +6,20 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ✅ Serve static files from /public (no ".." needed now)
-app.use(express.static(path.join(__dirname, "public")));
+// ✅ Serve everything in /public correctly (no more __dirname + "..")
+app.use(express.static(path.join(process.cwd(), "public")));
 
-const FILE_PATH = path.join(__dirname, "public", "mint.json");
+// ✅ Write to actual file inside /public
+const FILE_PATH = path.join(process.cwd(), "public", "mint.json");
+
+// 🔐 Your XRPL wallet
 const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
 
-// ✅ Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-// ✅ Start XRPL listener
+// 🚀 Start listening for XRPL mint transactions
 async function main() {
   const client = new xrpl.Client("wss://xrplcluster.com");
   await client.connect();
-  console.log("🟢 Connected to XRPL, listening for mints...");
+  console.log("✅ Connected to XRPL, listening for mints...");
 
   await client.request({
     command: "subscribe",
@@ -29,8 +27,9 @@ async function main() {
   });
 
   client.on("transaction", (tx) => {
-    const { transaction, meta } = tx;
+    console.log("🔵 TX received:", JSON.stringify(tx, null, 2));
 
+    const { transaction, meta } = tx;
     if (
       transaction.TransactionType === "NFTokenMint" &&
       transaction.Account === WALLET &&
@@ -39,10 +38,15 @@ async function main() {
       const mintTime = new Date().toISOString();
       console.log("🔥 GEN2 Possum Minted at", mintTime);
 
+      // ✅ Save to /public/mint.json
       fs.writeFileSync(FILE_PATH, JSON.stringify({ lastMint: mintTime }));
       console.log("✅ mint.json updated successfully");
     }
   });
 }
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
+});
 
 main().catch(console.error);
