@@ -7,10 +7,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ✅ Serve /public folder (relative to src/)
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ Write to /public/mint.json
-const FILE_PATH = path.join(__dirname, "../public", "mint.json");
+const FILE_PATH = path.join(__dirname, "public", "mint.json");
 
 // 👇 Replace with your actual wallet
 const WALLET = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
@@ -52,4 +52,5 @@ app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   main();
 });
+
 
