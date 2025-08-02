@@ -1,10 +1,24 @@
 const xrpl = require("xrpl");
 const fs = require("fs");
 const path = require("path");
+const express = require("express"); // ← move this to the top
 
 const WALLET = 'rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT';
 const FILE_PATH = path.join(__dirname, "..", "mint.json");
 
+// ✅ Start Express server immediately
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get("/mint.json", (req, res) => {
+  res.sendFile(FILE_PATH);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// 🎯 XRPL listener logic stays inside main()
 async function main() {
   const client = new xrpl.Client('wss://xrplcluster.com');
   await client.connect();
@@ -28,20 +42,6 @@ async function main() {
       fs.writeFileSync(FILE_PATH, JSON.stringify({ lastMint: mintTime }));
     }
   });
-
-const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Serve mint.json publicly
-app.get("/mint.json", (req, res) => {
-  res.sendFile(path.join(__dirname, "../mint.json"));
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
 }
 
 main().catch(console.error);
-
