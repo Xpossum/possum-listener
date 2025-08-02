@@ -29,7 +29,12 @@ async function main() {
     accounts: [WALLET]
   });
 
-  client.on('transaction', (tx) => {
+ client.on('transaction', (tx) => {
+  console.log("Received tx:", JSON.stringify(tx, null, 2)); // 👈 ADD THIS
+
+  const { transaction, meta } = tx;
+  ...
+});
     const { transaction, meta } = tx;
     if (
       transaction.TransactionType === 'NFTokenMint' &&
@@ -45,3 +50,4 @@ async function main() {
 }
 
 main().catch(console.error);
+
