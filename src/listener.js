@@ -33,7 +33,6 @@ async function main() {
   console.log("Received tx:", JSON.stringify(tx, null, 2)); // 👈 ADD THIS
 
   const { transaction, meta } = tx;
-  ...
 });
     const { transaction, meta } = tx;
     if (
@@ -50,4 +49,5 @@ async function main() {
 }
 
 main().catch(console.error);
+
 
