@@ -2,8 +2,10 @@ const express = require("express");
 const xrpl = require("xrpl");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 // ✅ Serve everything in /public (one level up from /src)
@@ -52,3 +54,4 @@ app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   main();
 });
+
