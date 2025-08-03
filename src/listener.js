@@ -5,7 +5,9 @@ const path = require("path");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://xrplawesomepossum.com" // Allow only your domain
+}));
 const PORT = process.env.PORT || 3000;
 
 // ✅ Serve everything in /public (one level up from /src)
@@ -54,4 +56,5 @@ app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
   main();
 });
+
 
